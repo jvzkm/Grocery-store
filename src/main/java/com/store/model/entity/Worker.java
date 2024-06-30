@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -35,7 +34,8 @@ public class Worker {
     @NotNull
     private Job job;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "store_id")
     @NotNull
     private Store store;
 

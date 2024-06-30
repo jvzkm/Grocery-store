@@ -22,5 +22,5 @@ public class Job {
     private String name;
 
     @NotNull
-    private double persentage;
+    private double percentage;
 }

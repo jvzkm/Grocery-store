@@ -1,5 +1,6 @@
 package com.store.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -40,8 +41,7 @@ public class CardContract {
     @NotNull
     private LocalDate signedDate;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_id")
+    @ManyToOne
     @NotNull
     private CardTransaction cardTransaction;
 }

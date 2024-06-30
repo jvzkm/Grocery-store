@@ -22,8 +22,4 @@ public class Store {
     @ManyToOne
     @NotNull
     private BankAccount bankAccount;
-
-    @OneToOne
-    @NotNull
-    private Worker manager;
 }

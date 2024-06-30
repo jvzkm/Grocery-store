@@ -1,7 +1,8 @@
 package com.store.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.store.exceptions.InsuficientFundsException;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,6 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Setter;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -27,7 +29,7 @@ public class BankAccount {
     private String pin;
 
     @NotNull
-    private String amount;
+    private double amount;
 
     @Enumerated(value = STRING)
     @NotNull
@@ -39,6 +41,14 @@ public class BankAccount {
     private Bank bank;
 
     @OneToOne(mappedBy = "bankAccount")
-    @NotNull
+    @JsonIgnore
     private CardProvider person;
+
+    public void setAmount(double amount) {
+        if (amount < 0) {
+            throw new InsuficientFundsException();
+        } else {
+            this.amount = amount;
+        }
+    }
 }

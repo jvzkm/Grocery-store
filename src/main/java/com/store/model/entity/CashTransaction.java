@@ -19,10 +19,6 @@ public class CashTransaction {
     @GeneratedValue(strategy = IDENTITY)
     private int id;
 
-    @OneToOne(mappedBy = "cashTransaction")
-    @NotNull
-    private CashContract cashContract;
-
     @ManyToOne
     @NotNull
     private BankAccount receivingBankAccount;

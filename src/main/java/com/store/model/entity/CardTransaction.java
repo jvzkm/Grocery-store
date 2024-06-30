@@ -20,10 +20,6 @@ public class CardTransaction {
     @GeneratedValue(strategy = IDENTITY)
     private int id;
 
-    @OneToOne(mappedBy = "cardTransaction")
-    @NotNull
-    private CardContract cardContract;
-
     @ManyToOne
     @NotNull
     private BankAccount givingBankAccount;

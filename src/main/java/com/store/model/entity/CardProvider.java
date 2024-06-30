@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Data
 @Entity
 @Table(name = "t_cardProvider")
-public class CardProvider {
+public class CardProvider implements Provider {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;

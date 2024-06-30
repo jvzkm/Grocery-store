@@ -34,6 +34,10 @@ public class Sale {
     @NotNull
     private BankAccount storeBankAccount;
 
+    @ManyToOne
+    @NotNull
+    private Worker worker;
+
     @NotNull
     private double sum;
 

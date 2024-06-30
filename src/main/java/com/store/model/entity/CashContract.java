@@ -24,7 +24,7 @@ public class CashContract {
 
     @ManyToOne
     @NotNull
-    private Provider provider;
+    private CashProvider provider;
 
     @ManyToOne
     @NotNull
@@ -40,8 +40,7 @@ public class CashContract {
     @NotNull
     private LocalDate signedDate;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_id")
+    @ManyToOne
     @NotNull
     private CashTransaction cashTransaction;
 }
