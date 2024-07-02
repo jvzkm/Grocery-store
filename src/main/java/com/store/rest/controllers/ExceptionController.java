@@ -2,6 +2,7 @@ package com.store.rest.controllers;
 
 import com.store.exceptions.AppException;
 import com.store.exceptions.MalformedJsonException;
+import com.store.exceptions.RequestHeaderException;
 import com.store.model.dto.exception.ExceptionDto;
 import com.store.model.mapper.ExceptionMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return super.handleHttpMediaTypeNotAcceptable(ex, headers, status, request);
+        return handleException(new RequestHeaderException());
     }
 
     @Override
@@ -52,6 +53,9 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity
+                .status(INTERNAL_SERVER_ERROR)
+                .body(ex.getMessage());
     }
+
 }

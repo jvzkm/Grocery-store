@@ -4,16 +4,18 @@ import com.store.dao.BankAccountRepository;
 import com.store.dao.CardTransactionRepository;
 import com.store.dao.CashTransactionRepository;
 import com.store.dao.ItemRepository;
+import com.store.exceptions.IllegalTransactionException;
 import com.store.model.entity.CardContract;
 import com.store.model.entity.CardTransaction;
 import com.store.model.entity.CashContract;
 import com.store.model.entity.CashTransaction;
 import com.store.model.entity.Item;
 import com.store.model.entity.Product;
+import com.store.model.entity.Status;
 import com.store.model.entity.Store;
 import com.store.model.mapper.CardContractMapper;
 import com.store.model.mapper.CashContractMapper;
-import com.store.service.TransctionService;
+import com.store.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 import static com.store.model.entity.Condition.NEW;
+import static com.store.model.entity.Status.ACTIVE;
 import static com.store.util.TransactionConstants.EXP;
 import static com.store.util.TransactionConstants.TAX;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionServiceImpl implements TransctionService {
+public class TransactionServiceImpl implements TransactionService {
 
     private final CardTransactionRepository cardTransactionRepository;
     private final CashTransactionRepository cashTransactionRepository;
@@ -72,7 +75,11 @@ public class TransactionServiceImpl implements TransctionService {
         var storeBank = contract.getStore().getBankAccount();
         storeBank.setAmount(storeBank.getAmount() + contract.getProduct().getPrice() * contract.getAmount());
 
-        bankAccountRepository.save(storeBank);
+        if (storeBank.getStatus().equals(ACTIVE)) {
+            bankAccountRepository.save(storeBank);
+        } else {
+            throw new IllegalTransactionException();
+        }
 
         saveItems(contract.getProduct(), contract.getAmount(), contract.getStore());
     }

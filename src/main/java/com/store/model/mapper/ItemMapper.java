@@ -4,10 +4,13 @@ import com.store.dao.ProductRepository;
 import com.store.dao.StoreRepository;
 import com.store.model.dto.item.ItemRequestDto;
 import com.store.model.dto.item.ItemResponseDto;
+import com.store.model.entity.Condition;
 import com.store.model.entity.Item;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static com.store.model.entity.Condition.NEW;
 
 @Mapper(componentModel = "spring")
 public abstract class ItemMapper {
@@ -25,5 +28,10 @@ public abstract class ItemMapper {
     @Mapping(target = "product", expression = "java(prodRepository.findById(itemRequestDto.getProductId()).get())")
     @Mapping(target = "store", expression = "java(storeRepository.findById(itemRequestDto.getStoreId()).get())")
     @Mapping(target = "price", source = "price")
+    @Mapping(target = "itemCondition", expression = "java(com.store.model.entity.Condition.NEW)")
     public abstract Item itemRequestDtoToItem(ItemRequestDto itemRequestDto);
+
+    protected Condition mapCondition() {
+        return NEW;
+    }
 }

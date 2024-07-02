@@ -1,6 +1,5 @@
 package com.store.rest.controllers;
 
-import com.store.dao.BankAccountRepository;
 import com.store.model.entity.BankAccount;
 import com.store.service.impl.BankServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,5 @@ public class BankAccountController {
             @RequestBody BankAccount account) {
         return bankService.addBankAccount(account);
     }
-
 
 }
