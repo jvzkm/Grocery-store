@@ -14,5 +14,6 @@ public class ExceptionConstants {
     public static final String MALFORMED = "Request object JSON malformed";
     public static final String ILLEGAL_SALE = "You can not buy any sold or expired item";
     public static final String ILLEGAL_TRANSACTION = "You can not use the bank Account if its not active";
+    public static final String RESOURCE_NOT_FOUND = "There is no such endpoint";
 
 }

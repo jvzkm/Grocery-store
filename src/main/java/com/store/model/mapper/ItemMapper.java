@@ -31,7 +31,4 @@ public abstract class ItemMapper {
     @Mapping(target = "itemCondition", expression = "java(com.store.model.entity.Condition.NEW)")
     public abstract Item itemRequestDtoToItem(ItemRequestDto itemRequestDto);
 
-    protected Condition mapCondition() {
-        return NEW;
-    }
 }

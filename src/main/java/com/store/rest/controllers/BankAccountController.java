@@ -20,13 +20,13 @@ public class BankAccountController {
 
     @GetMapping
     public List<BankAccount> bankAccounts() {
-        return bankService.getAllBankAccounts();
+        return bankService.getBankAllAccounts();
     }
 
     @GetMapping("/{id}")
     public BankAccount bankAccount(
             @PathVariable int id) {
-        return bankService.getAllBankAccounts(id);
+        return bankService.getBankAllAccounts(id);
     }
 
     @PostMapping

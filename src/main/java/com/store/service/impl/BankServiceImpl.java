@@ -2,7 +2,6 @@ package com.store.service.impl;
 
 import com.store.dao.BankAccountRepository;
 import com.store.exceptions.BankAccountNotFound;
-import com.store.model.entity.Bank;
 import com.store.model.entity.BankAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,10 @@ public class BankServiceImpl {
 
     private final BankAccountRepository bankAccountRepository;
 
-    public List<BankAccount> getAllBankAccounts(){
+    public List<BankAccount> getBankAllAccounts(){
         return bankAccountRepository.findAll();
     }
-    public BankAccount getAllBankAccounts(int id){
+    public BankAccount getBankAllAccounts(int id){
         return bankAccountRepository.findById(id)
                 .orElseThrow(BankAccountNotFound::new);
     }

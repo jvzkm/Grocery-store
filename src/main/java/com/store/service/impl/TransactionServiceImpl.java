@@ -5,13 +5,13 @@ import com.store.dao.CardTransactionRepository;
 import com.store.dao.CashTransactionRepository;
 import com.store.dao.ItemRepository;
 import com.store.exceptions.IllegalTransactionException;
+import com.store.model.entity.BankAccount;
 import com.store.model.entity.CardContract;
 import com.store.model.entity.CardTransaction;
 import com.store.model.entity.CashContract;
 import com.store.model.entity.CashTransaction;
 import com.store.model.entity.Item;
 import com.store.model.entity.Product;
-import com.store.model.entity.Status;
 import com.store.model.entity.Store;
 import com.store.model.mapper.CardContractMapper;
 import com.store.model.mapper.CashContractMapper;
@@ -65,8 +65,8 @@ public class TransactionServiceImpl implements TransactionService {
         provBank.setAmount(provBank.getAmount() - contract.getProduct().getPrice() * contract.getAmount());
         storeBank.setAmount(storeBank.getAmount() + contract.getProduct().getPrice() * contract.getAmount());
 
-        bankAccountRepository.save(provBank);
-        bankAccountRepository.save(storeBank);
+        validateTransfer(provBank);
+        validateTransfer(storeBank);
 
         saveItems(contract.getProduct(), contract.getAmount(), contract.getStore());
     }
@@ -75,13 +75,17 @@ public class TransactionServiceImpl implements TransactionService {
         var storeBank = contract.getStore().getBankAccount();
         storeBank.setAmount(storeBank.getAmount() + contract.getProduct().getPrice() * contract.getAmount());
 
-        if (storeBank.getStatus().equals(ACTIVE)) {
-            bankAccountRepository.save(storeBank);
+        validateTransfer(storeBank);
+
+        saveItems(contract.getProduct(), contract.getAmount(), contract.getStore());
+    }
+
+    private void validateTransfer(BankAccount account) {
+        if (account.getStatus().equals(ACTIVE)) {
+            bankAccountRepository.save(account);
         } else {
             throw new IllegalTransactionException();
         }
-
-        saveItems(contract.getProduct(), contract.getAmount(), contract.getStore());
     }
 
     private void saveItems(Product product, int amount, Store store) {

@@ -31,7 +31,7 @@ public class FoodExpirationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
 
         itemRepository.findAll().forEach(this::updateCondition);
-        itemRepository.findAll().forEach(it -> it.applyExpirationDiscountIfEligible(itemRepository,discountRepository));
+        itemRepository.findAll().forEach(it -> it.applyExpirationDiscountIfEligible(itemRepository, discountRepository));
 
         filterChain.doFilter(request, response);
 

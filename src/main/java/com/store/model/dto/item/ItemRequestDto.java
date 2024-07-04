@@ -1,11 +1,18 @@
 package com.store.model.dto.item;
 
+import com.store.model.entity.Condition;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemRequestDto {
     @NotNull
     private int productId;
@@ -21,4 +28,5 @@ public class ItemRequestDto {
 
     @NotNull
     private LocalDate expDate;
+
 }
