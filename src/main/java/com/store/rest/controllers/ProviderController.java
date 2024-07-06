@@ -22,7 +22,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/conf-providerService/provider")
+@RequestMapping("/conf-service/provider")
 public class ProviderController {
 
     private final ProviderService providerService;

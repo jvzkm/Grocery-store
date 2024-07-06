@@ -34,8 +34,31 @@
         <rest-assured.version>5.4.0</rest-assured.version>
         <testcontainers.version>1.19.6</testcontainers.version>
         <hibernate-core.version>6.5.2.Final</hibernate-core.version>
+        <jjwt-api.version>0.11.5</jjwt-api.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+
+
+        <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>

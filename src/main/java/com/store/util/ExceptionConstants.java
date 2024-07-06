@@ -15,5 +15,10 @@ public class ExceptionConstants {
     public static final String ILLEGAL_SALE = "You can not buy any sold or expired item";
     public static final String ILLEGAL_TRANSACTION = "You can not use the bank Account if its not active";
     public static final String RESOURCE_NOT_FOUND = "There is no such endpoint";
+    public static final String BAD_CREDENTIALS = "The username or password is incorrect";
+    public static final String ACC_STATUS = "The account is locked";
+    public static final String ACCESS_DENIED= "You are not authorized to access this resource";
+    public static final String INVALID_JWT= "The JWT signature is invalid";
+    public static final String EXPIRED_JWT= "The JWT signature has expired";
 
 }
