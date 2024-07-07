@@ -5,6 +5,7 @@ import com.store.model.dto.product.ProductRequestDto;
 import com.store.model.entity.Product;
 import com.store.model.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('WORKER')")
     public Product addProduct(
             @RequestBody ProductRequestDto product) {
         return repository.save(mapper.mapToProduct(product));

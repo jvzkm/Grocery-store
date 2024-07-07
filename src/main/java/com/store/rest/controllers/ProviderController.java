@@ -5,6 +5,8 @@ import com.store.model.dto.provider.ProviderRequestDto;
 import com.store.model.entity.Provider;
 import com.store.service.ProviderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +47,7 @@ public class ProviderController {
 
     @PostMapping
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Provider addProvider(
             @RequestBody ProviderRequestDto providerDTO,
             @RequestHeader(TYPE) String type) {

@@ -7,10 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,10 +22,10 @@ import static com.store.model.security.Role.PROVIDER;
 import static com.store.model.security.Role.USER;
 import static com.store.model.security.Role.WORKER;
 import static com.store.util.RequestConstants.PUBLIC_URLS;
-import static java.lang.String.valueOf;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtAuthenticationFilter;
@@ -57,15 +58,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers(PUBLIC_URLS).permitAll()
-                                .requestMatchers("/conf-service/bank/**").hasAnyRole(valueOf(ADMIN), valueOf(PROVIDER))
-                                .requestMatchers("/conf-service/workers/**").hasAnyRole(valueOf(ADMIN), valueOf(WORKER))
-                                .requestMatchers("/conf-service/products/**").hasAnyRole(valueOf(ADMIN), valueOf(WORKER))
-                                .requestMatchers("/conf-service/items/**").hasAnyRole(valueOf(ADMIN), valueOf(USER))
-                                .requestMatchers("/conf-service/provider/**").hasAnyRole(valueOf(ADMIN), valueOf(PROVIDER))
-                                .requestMatchers("/conf-service/**").authenticated()
+                                .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
+                                .requestMatchers("/conf-service/bank/**").authenticated()
+                                .requestMatchers("/conf-service/workers/**").hasAnyAuthority(ADMIN.name(), WORKER.name())
+                                .requestMatchers("/conf-service/products/**").hasAnyAuthority(ADMIN.name(), WORKER.name())
+                                .requestMatchers("/conf-service/items/**").hasAnyAuthority(ADMIN.name(), USER.name())
+                                .requestMatchers("/conf-service/provider/**").hasAnyAuthority(ADMIN.name(), PROVIDER.name())
+                                .anyRequest().authenticated()
 
                 )
-                .httpBasic(Customizer.withDefaults());
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

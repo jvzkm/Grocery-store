@@ -1,7 +1,8 @@
 package com.store.rest.controllers;
 
+import com.store.model.dto.user.AdminRegisterDto;
 import com.store.model.dto.user.LoginUserDto;
-import com.store.model.dto.user.RegisterUserDto;
+import com.store.model.dto.user.RegularUserDto;
 import com.store.model.security.LoginResponse;
 import com.store.model.security.User;
 import com.store.service.AuthenticationService;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> register(@RequestBody RegularUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
@@ -43,4 +44,6 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(loginResponse);
     }
+
+
 }

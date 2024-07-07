@@ -1,8 +1,15 @@
 package com.store.model.security;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     ADMIN,
     USER,
     WORKER,
-    PROVIDER
+    PROVIDER;
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + name();
+    }
 }

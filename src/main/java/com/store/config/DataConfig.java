@@ -3,7 +3,6 @@ package com.store.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.store.rest.filters.FoodExpirationFilter;
-import com.store.rest.filters.JwtTokenFilter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class DataConfig {
 
     private final FoodExpirationFilter filter;
-    private final JwtTokenFilter jwt;
 
 
     @Bean

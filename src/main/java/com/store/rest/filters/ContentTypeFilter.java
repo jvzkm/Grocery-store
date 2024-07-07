@@ -12,8 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.store.util.RequestConstants.GET;
 import static com.store.util.RequestConstants.JSON;
+import static com.store.util.RequestConstants.POST;
 
 @Component
 public class ContentTypeFilter extends OncePerRequestFilter {
@@ -25,7 +25,7 @@ public class ContentTypeFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String header = request.getHeader("content-type");
-        if (!JSON.equals(header) && !GET.equals(request.getMethod())) {
+        if (!JSON.equals(header) && POST.equals(request.getMethod())) {
             throw new RequestHeaderException();
         }
         filterChain.doFilter(request, response);

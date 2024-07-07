@@ -3,6 +3,8 @@ package com.store.rest.controllers;
 import com.store.model.entity.BankAccount;
 import com.store.service.impl.BankServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +32,17 @@ public class BankAccountController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public BankAccount addNewBankAccount(
             @RequestBody BankAccount account) {
         return bankService.addBankAccount(account);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteAccount(
+            @PathVariable int id) {
+        bankService.delete(id);
     }
 
 }

@@ -5,6 +5,8 @@ import com.store.model.dto.item.ItemResponseDto;
 import com.store.model.mapper.ItemMapper;
 import com.store.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +44,7 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto save(@RequestBody ItemRequestDto itemRequestDto) {
         var item = itemService.saveItem(
                 mapper.itemRequestDtoToItem(itemRequestDto));
@@ -50,6 +53,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void update(@PathVariable int id,
                        @RequestBody ItemRequestDto itemRequestDto) {
         var item = itemService.getItemById(id);

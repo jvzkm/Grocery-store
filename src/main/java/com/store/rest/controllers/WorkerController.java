@@ -12,6 +12,8 @@ import com.store.model.mapper.WorkerMapper;
 import com.store.service.SaleService;
 import com.store.service.WorkerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,7 @@ public class WorkerController {
 
     @PostMapping
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public WorkerResposeDto save(@RequestBody WorkerRequestDto workerRequestDto) {
         var worker = workerService.saveWorker(
                 mapper.workerRequestDtoToWorker(workerRequestDto));
@@ -73,6 +76,7 @@ public class WorkerController {
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void update(@PathVariable int id,
                        @RequestBody WorkerRequestDto workerRequestDto) {
         var worker = workerService.getWorkerById(id);

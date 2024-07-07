@@ -25,4 +25,9 @@ public class BankServiceImpl {
         return  bankAccountRepository.save(bankAccount);
     }
 
+    public void delete(int id) {
+        bankAccountRepository
+                .delete(bankAccountRepository
+                        .findById(id).orElseThrow(BankAccountNotFound::new));
+    }
 }
