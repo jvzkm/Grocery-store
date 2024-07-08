@@ -46,8 +46,7 @@ public class ItemController {
     @ResponseStatus(OK)
     @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto save(@RequestBody ItemRequestDto itemRequestDto) {
-        var item = itemService.saveItem(
-                mapper.itemRequestDtoToItem(itemRequestDto));
+        var item = itemService.saveItem(mapper.itemRequestDtoToItem(itemRequestDto));
         return mapper.itemToItemResponseDto(item);
     }
 

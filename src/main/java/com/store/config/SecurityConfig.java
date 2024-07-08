@@ -25,12 +25,11 @@ import static com.store.util.RequestConstants.PUBLIC_URLS;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
-
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
@@ -59,7 +58,6 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers(PUBLIC_URLS).permitAll()
                                 .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
-                                .requestMatchers("/conf-service/bank/**").authenticated()
                                 .requestMatchers("/conf-service/workers/**").hasAnyAuthority(ADMIN.name(), WORKER.name())
                                 .requestMatchers("/conf-service/products/**").hasAnyAuthority(ADMIN.name(), WORKER.name())
                                 .requestMatchers("/conf-service/items/**").hasAnyAuthority(ADMIN.name(), USER.name())

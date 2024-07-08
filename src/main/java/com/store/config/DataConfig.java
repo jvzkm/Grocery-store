@@ -20,7 +20,6 @@ public class DataConfig {
 
     private final FoodExpirationFilter filter;
 
-
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
@@ -36,12 +35,6 @@ public class DataConfig {
         return registrationBean;
     }
 
-    private SecurityScheme createAPIKeyScheme() {
-        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
-                .bearerFormat("JWT")
-                .scheme("bearer");
-    }
-
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI().addSecurityItem(new SecurityRequirement().
@@ -50,5 +43,10 @@ public class DataConfig {
                         ("Bearer Authentication", createAPIKeyScheme()));
     }
 
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
+    }
 
 }

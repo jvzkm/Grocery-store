@@ -8,13 +8,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Slf4j
 @RestController
@@ -23,11 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     private final AuthenticationService authenticationService;
-    private final UserRepository userRepository;
+    private final UserRepository userRepository; // service needed
 
-    @DeleteMapping("/get/{email}")
+    @GetMapping("/get/{email}")
     public User getUser(@RequestParam @NotNull String email) {
-        return userRepository.findByEmail(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow( () -> new BadCredentialsException(""));
     }
 
     @PostMapping("/signup")
@@ -39,7 +45,7 @@ public class AdminController {
     @DeleteMapping("/delete/{email}")
     public void delete(@RequestParam @NotNull String email) {
         log.info("delete user {}", email);
-        var user = userRepository.findByEmail(email).orElseThrow();
+        var user = userRepository.findByEmail(email).orElseThrow( () -> new BadCredentialsException(""));
         userRepository.delete(user);
     }
 
@@ -53,14 +59,14 @@ public class AdminController {
     }
 
     private static void update(AdminRegisterDto dto, User user) {
-        if (dto.getPassword() != null) {
+        if (nonNull(dto.getPassword())) {
             user.setPassword(dto.getPassword());
         }
         if (dto.getEmail() != null) {
-            user.setPassword(dto.getEmail());
+            user.setEmail(dto.getEmail());
         }
         if (dto.getFullName() != null) {
-            user.setPassword(dto.getFullName());
+            user.setFullName(dto.getFullName());
         }
     }
 

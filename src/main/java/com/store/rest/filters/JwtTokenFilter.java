@@ -47,7 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader(AUTHORIZATION);
 
-        log.warn("--JWT FILTER--");
+        log.warn("--JWT FILTER-- {}",request.getRequestURI());
 
 
         if (authHeader == null || !authHeader.startsWith(BEARER)) {
