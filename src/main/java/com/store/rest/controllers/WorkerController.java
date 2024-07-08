@@ -63,6 +63,7 @@ public class WorkerController {
 
     @PostMapping("/{id}")
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('WORKER')")
     public SaleResponseDto createSale(
             @PathVariable int id,
             @RequestBody SaleRequestDto saleRequestDto) {
@@ -70,7 +71,7 @@ public class WorkerController {
         Worker workerById = workerService.getWorkerById(id);
         sale.setWorker(workerById);
         sale.setStoreBankAccount(workerById.getStore().getBankAccount());
-        sale.setSum(sale.getItems().stream().mapToDouble(Item::getPrice).sum());
+        sale.setSum(sale.getItems().stream().mapToDouble(Item::getPrice).sum()); // in a service
         return saleMapper.toResponseDto(saleService.createSale(sale));
     }
 

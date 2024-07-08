@@ -5,7 +5,6 @@ import com.store.model.dto.provider.ProviderRequestDto;
 import com.store.model.entity.Provider;
 import com.store.service.ProviderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.store.util.ProviderConstants.TYPE;
+import static com.store.util.ProviderConstants.TYPE_HEADER;
 import static org.springframework.http.HttpStatus.OK;
 
 
@@ -32,7 +31,7 @@ public class ProviderController {
     @GetMapping
     @ResponseStatus(OK)
     public List<Provider> getAllProviders(
-            @RequestHeader(value = TYPE, required = false) String type) {
+            @RequestHeader(value = TYPE_HEADER, required = false) String type) {
         return providerService.getProvidersByType(type);
     }
 
@@ -40,7 +39,7 @@ public class ProviderController {
     @ResponseStatus(OK)
     public Provider getProvider(
             @PathVariable int id,
-            @RequestHeader(TYPE) String type) {
+            @RequestHeader(TYPE_HEADER) String type) {
         return providerService.getProviderByType(id, type);
     }
 
@@ -50,16 +49,17 @@ public class ProviderController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Provider addProvider(
             @RequestBody ProviderRequestDto providerDTO,
-            @RequestHeader(TYPE) String type) {
+            @RequestHeader(TYPE_HEADER) String type) {
         return providerService.saveProviderByType(providerDTO, type);
     }
 
 
     @PostMapping("/{id}")
     @ResponseStatus(OK)
+    @PreAuthorize("hasAuthority('PROVIDER')")
     public void createContract(
             @PathVariable int id,
-            @RequestHeader(TYPE) String type,
+            @RequestHeader(TYPE_HEADER) String type,
             @RequestBody ContractRequestDto requestDto) {
         providerService.createContractByType(id, type, requestDto);
     }

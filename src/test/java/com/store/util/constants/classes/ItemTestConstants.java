@@ -35,14 +35,14 @@ public class ItemTestConstants {
                     .id(ID_FIVE)
                     .category(SPICE)
                     .name("NEW PROD")
-                    .price(999)
+                    .price(999.00)
                     .build();
 
     public static final ProductRequestDto prodRequest =
             ProductRequestDto.builder()
                     .name("NEW PROD")
                     .category(SPICE)
-                    .price(999)
+                    .price(999.00)
                     .build();
 
 

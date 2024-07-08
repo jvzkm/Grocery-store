@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import static com.store.util.ExceptionConstants.ACCESS_DENIED;
 import static com.store.util.ExceptionConstants.ACC_STATUS;
 import static com.store.util.ExceptionConstants.BAD_CREDENTIALS;
+import static com.store.util.ExceptionConstants.CONFLICT;
 import static com.store.util.ExceptionConstants.EXPIRED_JWT;
 import static com.store.util.ExceptionConstants.INVALID_JWT;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
@@ -49,7 +50,6 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 
     private final ExceptionMapper exceptionMapper;
     private final UserRepository repository;
-
 
     @ExceptionHandler(AppException.class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
@@ -82,34 +82,37 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Cannot delete entity due to existing foreign key constraints.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(CONFLICT);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
+        return handleException(new AuthException(BAD_CREDENTIALS));
+    }
+
+    @ExceptionHandler(AccountStatusException.class)
+    public ResponseEntity<Object> handleAccountStatusException(AccountStatusException ex) {
+        return handleException(new AuthException(ACC_STATUS));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        return handleException(new AuthException(ACCESS_DENIED));
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex) {
+        return handleException(new AuthException(EXPIRED_JWT));
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(SignatureException ex) {
+        return handleException(new JwtException(INVALID_JWT));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
         log.error(ex.getMessage());
-
-        if (ex instanceof BadCredentialsException) {
-            log.info(repository.findAll().toString());
-            return handleException(new AuthException(BAD_CREDENTIALS));
-        }
-
-        if (ex instanceof AccountStatusException) {
-            return handleException(new AuthException(ACC_STATUS));
-        }
-
-        if (ex instanceof AccessDeniedException) {
-            return handleException(new AuthException(ACCESS_DENIED));
-        }
-
-        if (ex instanceof SignatureException) {
-            return handleException(new JwtException(INVALID_JWT));
-        }
-
-        if (ex instanceof ExpiredJwtException) {
-            return handleException(new AuthException(EXPIRED_JWT));
-        }
 
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)

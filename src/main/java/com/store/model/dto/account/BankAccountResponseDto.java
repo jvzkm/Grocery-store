@@ -5,16 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
+@NotNull
 public class BankAccountResponseDto {
-    @NotNull
+
     private int id;
 
-    @NotNull
     private String pin;
 
-    @NotNull
     private double amount;
 
-    @NotNull
     private Status status;
 }

@@ -26,22 +26,19 @@ public class BankAccountController {
     }
 
     @GetMapping("/{id}")
-    public BankAccount bankAccount(
-            @PathVariable int id) {
+    public BankAccount bankAccount(@PathVariable int id) {
         return bankService.getBankAllAccounts(id);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BankAccount addNewBankAccount(
-            @RequestBody BankAccount account) {
+    public BankAccount addNewBankAccount(@RequestBody BankAccount account) {
         return bankService.addBankAccount(account);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteAccount(
-            @PathVariable int id) {
+    public void deleteAccount(@PathVariable int id) {
         bankService.delete(id);
     }
 
